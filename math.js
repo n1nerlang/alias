@@ -1,26 +1,33 @@
 // math.js
 
-// Helper to generate a random uppercase letter
-const getRandomLetter = () => String.fromCharCode(65 + Math.floor(Math.random() * 26));
+const getRandChar = () => {
+    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+    return charset.charAt(Math.floor(Math.random() * charset.length));
+};
+
+const getRandLabel = () => String.fromCharCode(65 + Math.floor(Math.random() * 26));
 
 export function obfuscateMath(code) {
     return code.replace(/\b(\d+)\b/g, (match) => {
-        const val = parseInt(match);
-        let output = "";
+        const originalValue = parseInt(match);
+        let junkData = "";
         
         // Random repetition: 25 to 40 times
-        const iterations = Math.floor(Math.random() * (40 - 25 + 1)) + 25;
+        const iterations = Math.floor(Math.random() * 16) + 25;
         
         for (let i = 0; i < iterations; i++) {
-            const randA = Math.floor(Math.random() * 900000) + 100000;
-            const randB = Math.floor(Math.random() * 900000) + 100000;
-            const randOp = Math.floor(Math.random() * 900000);
-            const label = getRandomLetter();
+            // Generate a random "nonsense" segment
+            let noise = "";
+            for(let j = 0; j < 5; j++) noise += getRandChar();
             
-            output += `[${label}]${randA}+${randB}*${randOp}|`;
+            const randA = Math.floor(Math.random() * 999999);
+            const label = getRandLabel();
+            
+            // This mimics that "Goofy" style with symbols and labels
+            junkData += `[${label}]${randA}${noise}+${getRandChar()}|`;
         }
         
-        // The classic Prometheus ending
-        return `${output}=[G]${val}`;
+        // The [G] anchor
+        return `${junkData}=[G]${originalValue}`;
     });
 }
