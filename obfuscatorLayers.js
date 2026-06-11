@@ -59,16 +59,29 @@ async function processLuaObfuscation(rawCode) {
 }
 
 /**
+ * Hex-encode a JavaScript string in a browser-safe way
+ */
+function toHex(str) {
+    let hex = '';
+    for (let i = 0; i < str.length; i++) {
+        const code = str.charCodeAt(i);
+        hex += code.toString(16).padStart(2, '0');
+    }
+    return hex;
+}
+
+/**
  * Obfuscate strings in Lua code
  */
 function obfuscateLuaStrings(code) {
-    const stringPattern = /"([^"]*)"|'([^']*)'/g;
+    const stringPattern = /"([^"\\]*(?:\\.[^"\\]*)*)"|'([^'\\]*(?:\\.[^'\\]*)*)'/g;
     const stringMap = new Map();
     let stringIndex = 0;
     
     let obfuscated = code.replace(stringPattern, (match, doubleQuoted, singleQuoted) => {
-        const str = doubleQuoted || singleQuoted;
-        const encodedStr = Buffer.from(str).toString('hex');
+        const str = doubleQuoted !== undefined ? doubleQuoted : singleQuoted;
+        const decoded = str.replace(/\\n/g, '\n').replace(/\\r/g, '\r');
+        const encodedStr = toHex(decoded);
         const varName = `_str${stringIndex++}`;
         stringMap.set(varName, encodedStr);
         return varName;
