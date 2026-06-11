@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alias | Roblox Script Obfuscator</title>
+    <!-- Simple CDN for styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <style>
+        body { padding: 2rem; }
+        .container { max-width: 800px; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>Alias</h1>
+        <p>Advanced script protection for your projects.</p>
+        
+        <textarea id="input-area" placeholder="Paste your raw Lua code here..." rows="10"></textarea>
+        
+        <div class="grid">
+            <button id="obfuscate-btn">Obfuscate</button>
+            <button id="copy-btn" class="secondary">Copy Output</button>
+        </div>
+
+        <textarea id="output-area" placeholder="Obfuscated code will appear here..." readonly rows="10"></textarea>
+    </main>
+
+    <script type="module" src="ui.js"></script>
+</body>
+</html>
